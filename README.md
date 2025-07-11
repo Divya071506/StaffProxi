@@ -1,5 +1,5 @@
-📘 StaffProxi
-StaffProxi is a college project designed to streamline and digitalize academic staff tracking and management within an educational institution. The system enables better coordination and efficient use of staff resources by monitoring staff availability, curriculum progress, and classroom utilization.
+📘 StaffProxi :
+StaffProxi is my 1st college project designed to streamline and digitalize academic staff tracking and management within an educational institution. The system enables better coordination and efficient use of staff resources by monitoring staff availability, curriculum progress, and classroom utilization.
 
 🔧 Features
 🧑‍🏫 Sub-Staff Assignment
