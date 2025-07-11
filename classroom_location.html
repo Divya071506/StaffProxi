@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #A8DADC;
+        }
+
+        .container {
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            color: #1D3557;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .input-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        select, button {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #cfcfcf;
+            cursor: pointer;
+        }
+
+        select:hover, button:hover {
+            border-color: #1D3557;
+            color: #1D3557;
+        }
+
+        button {
+            background-color: #1D3557;
+            color: white;
+            border: none;
+        }
+
+        .class-info {
+            background-color: #e6f5ff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: left;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .class-info h2 {
+            color: #1D3557;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .class-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Classroom Location</h1>
+        <div class="input-container">
+            <select id="daySelect">
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+                <option value="Sunday">Sunday</option>
+            </select>
+            <select id="periodSelect">
+                <option value="Period 1">Period 1</option>
+                <option value="Period 2">Period 2</option>
+                <option value="Period 3">Period 3</option>
+                <option value="Period 4">Period 4</option>
+                <option value="Period 5">Period 5</option>
+                <option value="Period 6">Period 6</option>
+                <option value="Period 7">Period 7</option>
+                <option value="Period 8">Period 8</option>
+            </select>
+            <button onclick="showClassInfo()">Submit</button>
+        </div>
+        <div class="class-info" id="classInfo">
+            <h2>Class Info:</h2>
+            <p><strong>Subject:</strong> <span id="subject"></span></p>
+            <p><strong>Location:</strong> <span id="location"></span></p>
+            <p><strong>Time:</strong> <span id="time"></span></p>
+        </div>
+    </div>
+
+    <script>
+        const schedule = {
+            Monday: {
+                "Period 1": { subject: "Math", location: "Room 804", time: "9:00 AM - 10:00 AM" },
+                "Period 2": { subject: "Science", location: "Room 805", time: "10:00 AM - 11:00 AM" },
+                "Period 3": { subject: "History", location: "Room 806", time: "11:00 AM - 12:00 PM" },
+                "Period 4": { subject: "Art", location: "Room 807", time: "12:00 PM - 1:00 PM" },
+                "Period 5": { subject: "PE", location: "Gym", time: "1:00 PM - 2:00 PM" },
+                "Period 6": { subject: "English", location: "Room 808", time: "2:00 PM - 3:00 PM" },
+                "Period 7": { subject: "Music", location: "Room 809", time: "3:00 PM - 4:00 PM" },
+                "Period 8": { subject: "Computer", location: "Room 810", time: "4:00 PM - 5:00 PM" }
+            },
+            // Repeat similar structure for other days (example for Tuesday)
+            Tuesday: {
+                "Period 1": { subject: "Chemistry", location: "Room 811", time: "9:00 AM - 10:00 AM" },
+                "Period 2": { subject: "Physics", location: "Room 812", time: "10:00 AM - 11:00 AM" },
+                "Period 3": { subject: "Biology", location: "Room 813", time: "11:00 AM - 12:00 PM" },
+                "Period 4": { subject: "Geography", location: "Room 814", time: "12:00 PM - 1:00 PM" },
+                "Period 5": { subject: "Drama", location: "Room 815", time: "1:00 PM - 2:00 PM" },
+                "Period 6": { subject: "Math", location: "Room 804", time: "2:00 PM - 3:00 PM" },
+                "Period 7": { subject: "History", location: "Room 806", time: "3:00 PM - 4:00 PM" },
+                "Period 8": { subject: "PE", location: "Gym", time: "4:00 PM - 5:00 PM" }
+            },
+            // Add data for other days here...
+        };
+
+        function showClassInfo() {
+            const day = document.getElementById("daySelect").value;
+            const period = document.getElementById("periodSelect").value;
+            const classInfo = schedule[day][period];
+
+            document.getElementById("subject").innerText = classInfo.subject;
+            document.getElementById("location").innerText = classInfo.location;
+            document.getElementById("time").innerText = classInfo.time;
+        }
+    </script>
+</body>
+</html>

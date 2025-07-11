@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Substitute Staff</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg,#A8DADC , #9bbabb);
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1D3557;
+            margin-bottom: 20px;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1D3557;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1D3557;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Find a Substitute Staff</h1>
+        
+        <label for="staffNameSelect">Absent Staff Name:</label>
+        <select id="staffNameSelect">
+            <option value="" disabled selected>Select staff name</option>
+            <option value="Mr. Johnson">Mr. Johnson</option>
+            <option value="Ms. Smith">Ms. Smith</option>
+            <option value="Mr. Brown">Mr. Brown</option>
+            <option value="Ms. Davis">Ms. Davis</option>
+            <option value="Mr. Wilson">Mr. Wilson</option>
+            <!-- Add more options as needed -->
+        </select>
+
+        <label for="daySelect">Day:</label>
+        <select id="daySelect">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+        </select>
+
+        <input type="text" id="period" placeholder="Enter the period number">
+        <button onclick="findSubstitute()">Find Substitute</button>
+        
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const substituteSchedule = {
+            Monday: {
+                1: "Mr. Taylor",
+                2: "Ms. Anderson",
+                3: "Mr. Clark",
+                4: "Ms. Martinez",
+                5: "Mr. Green",
+                6: "Ms. Lewis",
+                7: "Mr. Walker",
+                8: "Ms. Hill"
+            },
+            Tuesday: {
+                1: "Mr. Adams",
+                2: "Ms. Baker",
+                3: "Mr. Carter",
+                4: "Ms. Scott",
+                5: "Mr. Turner",
+                6: "Ms. Robinson",
+                7: "Mr. Phillips",
+                8: "Ms. Evans"
+            },
+            // Add data for other days as needed
+        };
+
+        function findSubstitute() {
+            const staffName = document.getElementById("staffNameSelect").value;
+            const day = document.getElementById("daySelect").value;
+            const period = document.getElementById("period").value.trim();
+            const resultElement = document.getElementById("result");
+
+            if (staffName === "" || period === "" || isNaN(period)) {
+                resultElement.textContent = "Please fill in all fields correctly.";
+                resultElement.style.color = "red";
+                return;
+            }
+
+            const substitute = substituteSchedule[day] && substituteSchedule[day][period];
+
+            if (substitute) {
+                resultElement.textContent = `Substitute for ${staffName} in Period ${period} on ${day}: ${substitute}`;
+                resultElement.style.color = "green";
+            } else {
+                resultElement.textContent = "No substitute available for this selection.";
+                resultElement.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>

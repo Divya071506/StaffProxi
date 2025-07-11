@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Free Period Management</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0f7f9;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      background-color: #457B9D;
+      color: white;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 0;
+    }
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #1D3557;
+    }
+    th {
+      background-color: #1D3557;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Staff Free Period Management</h2>
+  
+  <label for="staffSelect">Select Staff:</label>
+  <select id="staffSelect">
+    <option value="">Select a staff member</option>
+    <option value="Dr.M.Latha">Dr.M.Latha</option>
+    <option value="Mr.S.Rajesh">Mr.S.Rajesh</option>
+    <option value="Ms.K.Priya">Ms.K.Priya</option>
+    <option value="Mrs.J.Sree">Mrs.J.Sree</option>
+    <option value="Dr.R.Vikram">Dr.R.Vikram</option>
+  </select>
+  
+  <button onclick="viewFreePeriods()">View Free Periods</button>
+
+  <div id="result" style="display:none;">
+    <h3>Free Periods for <span id="staffName"></span></h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Period</th>
+        </tr>
+      </thead>
+      <tbody id="periodTable">
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // Sample free periods data for each staff
+  const staffFreePeriods = {
+    "Dr.M.Latha": [
+      { day: "Monday", period: "1st" },
+      { day: "Tuesday", period: "2nd" }
+    ],
+    "Mr.S.Rajesh": [
+      { day: "Wednesday", period: "3rd" },
+      { day: "Friday", period: "4th" }
+    ],
+    "Ms.K.Priya": [
+      { day: "Thursday", period: "1st" },
+      { day: "Friday", period: "2nd" }
+    ],
+    "Mrs.J.Sree": [
+      { day: "Monday", period: "3rd" },
+      { day: "Tuesday", period: "4th" }
+    ],
+    "Dr.R.Vikram": [
+      { day: "Wednesday", period: "2nd" },
+      { day: "Thursday", period: "3rd" }
+    ]
+  };
+
+  function viewFreePeriods() {
+    const staffSelect = document.getElementById("staffSelect");
+    const staffName = staffSelect.value;
+    const periodTable = document.getElementById("periodTable");
+    const resultDiv = document.getElementById("result");
+
+    // Clear previous results
+    periodTable.innerHTML = "";
+    resultDiv.style.display = "none";
+
+    // Check if a staff member is selected
+    if (staffName) {
+      document.getElementById("staffName").textContent = staffName;
+      
+      // Populate the table with the staff member's free periods
+      staffFreePeriods[staffName].forEach(period => {
+        const row = document.createElement("tr");
+        const dayCell = document.createElement("td");
+        const periodCell = document.createElement("td");
+
+        dayCell.textContent = period.day;
+        periodCell.textContent = period.period;
+
+        row.appendChild(dayCell);
+        row.appendChild(periodCell);
+        periodTable.appendChild(row);
+      });
+
+      // Display the results
+      resultDiv.style.display = "block";
+    } else {
+      alert("Please select a staff member.");
+    }
+  }
+</script>
+
+</body>
+</html>

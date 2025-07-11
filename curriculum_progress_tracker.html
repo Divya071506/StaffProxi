@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Progress Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #A8DADC;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .subject, .chapter {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .subject {
+            background-color: #e7f3fe;
+        }
+
+        .chapter {
+            background-color: #f9f7e8;
+        }
+
+        .chapter.completed {
+            background-color: #d4edda;
+            text-decoration: line-through;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            background-color: #1D3557;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1D3557;
+        }
+
+        .progress {
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal input {
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .modal button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Curriculum Progress Tracker</h1>
+        <div id="subjectsContainer">
+            <!-- Subjects will be dynamically inserted here -->
+        </div>
+        <button id="resetButton">Reset All Progress</button>
+        <button id="addSubjectButton">Add New Subject</button>
+        <div id="addSubjectModal" class="modal">
+            <input type="text" id="newSubjectName" placeholder="Subject Name">
+            <button id="addSubjectConfirm">Add Subject</button>
+            <button id="closeModal">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const subjects = [
+            {
+                name: 'Numerical Methods and Analysis',
+                chapters: ['Numerical Solutions of Algebric and Transidental Equations', 'Finite Differenes and Interpolation', 'Numerical Differentiation and Integration', 'Numerical Solutions of Ordinary Differentiation Equations', 'Numerical Solutions of PDE']
+            },
+            {
+                name: 'Computer Organization and Architecture',
+                chapters: ['Introduction to COA','Basic Structure of Computer', 'Arithmetic and Logical Unit','Basic Processing Unit', 'The Memory System']
+            },
+            {
+                name: 'Data Structures and Algorithms',
+                chapters: ['Structure and Functions', 'Linked List', 'Stack and Queues', 'Trees', 'Graphs and Hashing']
+            },
+            {
+                name: 'Operating Systems',
+                chapters: ['Introduction to OS', 'Process Management', 'CPU Scheduling', 'Memory Management', 'Protection']
+            },
+            {
+                name: 'Advanced Programming and Practices',
+                chapters: ['Introduction to Programming Paradigm', 'Java Programming Paradigms','Advanced java Programming Paradigms', 'Pythonic Programming Paradigm', 'Formal and Symbolic Programming Paradigm']
+            }
+        ];
+
+        const subjectsContainer = document.getElementById('subjectsContainer');
+        const resetButton = document.getElementById('resetButton');
+        const addSubjectButton = document.getElementById('addSubjectButton');
+        const addSubjectModal = document.getElementById('addSubjectModal');
+        const newSubjectNameInput = document.getElementById('newSubjectName');
+        const addSubjectConfirm = document.getElementById('addSubjectConfirm');
+        const closeModalButton = document.getElementById('closeModal');
+
+        loadSubjects();
+
+        function loadSubjects() {
+            subjectsContainer.innerHTML = ''; 
+            subjects.forEach(subject => {
+                const subjectDiv = document.createElement('div');
+                subjectDiv.className = 'subject';
+                subjectDiv.textContent = subject.name;
+
+                const chaptersDiv = document.createElement('div');
+                chaptersDiv.className = 'chapters';
+
+                const progressDiv = document.createElement('div');
+                progressDiv.className = 'progress';
+
+                // Create chapter elements
+                subject.chapters.forEach((chapter, index) => {
+                    const chapterDiv = document.createElement('div');
+                    chapterDiv.className = 'chapter';
+                    chapterDiv.textContent = chapter;
+
+                    const inputPercentage = document.createElement('input');
+                    inputPercentage.type = 'number';
+                    inputPercentage.placeholder = 'Completion %';
+                    inputPercentage.max = 100;
+
+                    chapterDiv.appendChild(inputPercentage);
+
+                    // Change background color based on input percentage
+                    inputPercentage.addEventListener('change', () => {
+                        const percentage = parseInt(inputPercentage.value);
+                        if (percentage >= 0 && percentage <= 100) {
+                            if (percentage === 100) {
+                                chapterDiv.style.backgroundColor = '#c8e6c9'; // Green for completed
+                                chapterDiv.classList.add('completed');
+                                inputPercentage.style.display = 'none'; // Hide input after completion
+                            } else {
+                                chapterDiv.style.backgroundColor = '#f9f7e8'; // Default background
+                                chapterDiv.classList.remove('completed');
+                            }
+                            updateProgress(progressDiv, subject.chapters);
+                        } else {
+                            alert('Please enter a valid percentage between 0 and 100.');
+                            inputPercentage.value = '';
+                        }
+                    });
+
+                    chaptersDiv.appendChild(chapterDiv);
+                });
+
+                subjectDiv.addEventListener('click', () => {
+                    chaptersDiv.style.display = chaptersDiv.style.display === 'none' ? 'block' : 'none';
+                    updateProgress(progressDiv, subject.chapters);
+                });
+
+                subjectsContainer.appendChild(subjectDiv);
+                subjectsContainer.appendChild(chaptersDiv);
+                subjectsContainer.appendChild(progressDiv);
+            });
+        }
+
+        // Update progress percentage
+        function updateProgress(progressDiv, chapters) {
+            const completedChapters = chapters.filter((chapter, index) => {
+                const chapterDiv = document.querySelectorAll('.chapter')[index];
+                return chapterDiv.classList.contains('completed');
+            }).length;
+            const totalChapters = chapters.length;
+            const percentage = totalChapters ? Math.round((completedChapters / totalChapters) * 100) : 0;
+            progressDiv.textContent = `Completion: ${percentage}%`;
+        }
+
+        // Reset all progress
+        resetButton.addEventListener('click', () => {
+            document.querySelectorAll('.chapter').forEach(chapterDiv => {
+                chapterDiv.classList.remove('completed');
+                chapterDiv.style.backgroundColor = '#f9f7e8';
+                const inputPercentage = chapterDiv.querySelector('input[type="number"]');
+                if (inputPercentage) {
+                    inputPercentage.value = '';
+                    inputPercentage.style.display = 'inline'; // Show input on reset
+                }
+            });
+            document.querySelectorAll('.progress').forEach(progressDiv => {
+                progressDiv.textContent = 'Completion: 0%';
+            });
+        });
+
+        // Add new subject
+        addSubjectButton.addEventListener('click', () => {
+            addSubjectModal.style.display = 'flex';
+        });
+
+        // Close modal
+        closeModalButton.addEventListener('click', () => {
+            addSubjectModal.style.display = 'none';
+        });
+
+        // Confirm adding a new subject
+        addSubjectConfirm.addEventListener('click', () => {
+            const newSubjectName = newSubjectNameInput.value.trim();
+            if (newSubjectName) {
+                subjects.push({ name: newSubjectName, chapters: [] });
+                newSubjectNameInput.value = '';
+                addSubjectModal.style.display = 'none';
+                loadSubjects();
+            } else {
+                alert('Please enter a subject name.');
+            }
+        });
+    </script>
+</body>
+</html>
